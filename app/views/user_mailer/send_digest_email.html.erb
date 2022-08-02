@@ -1,6 +1,6 @@
 
 <div class="container mt-5 mb-10 sub-content">
-  <h3 class="main-title">Hey, <%= @user.display_name || @user.username %>! 👋 <br/> Here's your Talent Protocol summary</h3>
+  <h3 class="main-title">Hey <%= @user.display_name || @user.username || "Talented human" %>! 👋 <br/> Here's your Talent Protocol summary</h3>
 </div>
 
 <% if @messagee_names.any? %>

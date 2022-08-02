@@ -3,7 +3,7 @@ class UserMailer < ApplicationMailer
     @user_id = indifferent_access_params[:user_id]
     @user = User.find(@user_id)
 
-    bootstrap_mail(to: @user.email, subject: "Welcome to Talent Protocol")
+    bootstrap_mail(to: @user.email, subject: "Confirm your email address")
   end
 
   def send_password_reset_email
@@ -19,14 +19,14 @@ class UserMailer < ApplicationMailer
 
   def send_welcome_email
     @user = indifferent_access_params[:user]
-    bootstrap_mail(to: @user.email, subject: "Welcome to Talent Protocol")
+    bootstrap_mail(to: @user.email, subject: "Welcome to the home of talented builders")
   end
 
   def send_token_launch_reminder_email
     @user = indifferent_access_params[:user]
     @user.update!(token_launch_reminder_sent_at: Time.now)
 
-    bootstrap_mail(to: @user.email, subject: "All set - It's time to launch your token!")
+    bootstrap_mail(to: @user.email, subject: "No token, no supporters 🤔")
   end
 
   def send_token_launched_email
@@ -39,11 +39,6 @@ class UserMailer < ApplicationMailer
     @user.update!(token_purchase_reminder_sent_at: Time.now)
 
     bootstrap_mail(to: @user.email, subject: "You're missing out on $TAL rewards!")
-  end
-
-  def send_talent_upgrade_email
-    @user = indifferent_access_params[:user]
-    bootstrap_mail(to: @user.email, subject: "Hey, you can now launch your token 🚀")
   end
 
   def send_message_received_email
@@ -61,11 +56,16 @@ class UserMailer < ApplicationMailer
   def send_complete_profile_reminder_email
     @user = indifferent_access_params[:user]
     @user.update!(complete_profile_reminder_sent_at: Time.zone.now)
-    bootstrap_mail(to: @user.email, subject: "Complete your profile and launch your token today 🚀")
+    bootstrap_mail(to: @user.email, subject: "Complete your profile and earn your NFT today! 🚀")
+  end
+
+  def send_completed_profile_email
+    @user = indifferent_access_params[:user]
+    bootstrap_mail(to: @user.email, subject: "You can now apply to launch a Talent Token! 👏")
   end
 
   def send_digest_email
-    @user = params[:user]
+    @user = indifferent_access_params[:user]
     @without_container = true
 
     digest_email_sent_at = @user.digest_email_sent_at || 2.weeks.ago
@@ -93,6 +93,21 @@ class UserMailer < ApplicationMailer
     @user.update!(digest_email_sent_at: Time.zone.now)
 
     bootstrap_mail(to: @user.email, subject: "The latest on Talent Protocol")
+  end
+
+  def send_application_received_email
+    @user = indifferent_access_params[:user]
+    bootstrap_mail(to: @user.email, subject: "We've received your application")
+  end
+
+  def send_application_rejected_email
+    @user = indifferent_access_params[:user]
+    bootstrap_mail(to: @user.email, subject: "Your application hasn't been approved")
+  end
+
+  def send_application_approved_email
+    @user = indifferent_access_params[:user]
+    bootstrap_mail(to: @user.email, subject: "Hey, you can now launch your token 🚀")
   end
 
   private

@@ -3,11 +3,11 @@ require "rails_helper"
 RSpec.describe UserMailer, type: :mailer do
   let(:user) { create :user }
 
-  describe "sign Up Email" do
+  describe "sign up email" do
     let(:mail) { described_class.with(user_id: user.id).send_sign_up_email }
 
     it "renders the header" do
-      expect(mail.subject).to eql("Welcome to Talent Protocol")
+      expect(mail.subject).to eql("Confirm your email address")
       expect(mail.to).to eql([user.email])
     end
 
@@ -32,22 +32,9 @@ RSpec.describe UserMailer, type: :mailer do
   describe "welcome email" do
     let(:mail) { described_class.with(user: user).send_welcome_email }
 
-    context "user is talent" do
-      let(:user) { create :user, :with_talent }
-
-      it "renders the header" do
-        expect(mail.subject).to eql("Welcome to Talent Protocol")
-        expect(mail.to).to eql([user.email])
-      end
-    end
-
-    context "user is supporter" do
-      let(:user) { create :user, :with_investor }
-
-      it "renders the header" do
-        expect(mail.subject).to eql("Welcome to Talent Protocol")
-        expect(mail.to).to eql([user.email])
-      end
+    it "renders the header" do
+      expect(mail.subject).to eql("Welcome to the home of talented builders")
+      expect(mail.to).to eql([user.email])
     end
   end
 
@@ -68,7 +55,34 @@ RSpec.describe UserMailer, type: :mailer do
     let(:mail) { described_class.with(user: user).send_complete_profile_reminder_email }
 
     it "renders the header" do
-      expect(mail.subject).to eql("Complete your profile and launch your token today 🚀")
+      expect(mail.subject).to eql("Complete your profile and earn your NFT today! 🚀")
+      expect(mail.to).to eql([user.email])
+    end
+  end
+
+  describe "send application received email" do
+    let(:mail) { described_class.with(user: user).send_application_received_email }
+
+    it "renders the header" do
+      expect(mail.subject).to eql("We've received your application")
+      expect(mail.to).to eql([user.email])
+    end
+  end
+
+  describe "send application rejected email" do
+    let(:mail) { described_class.with(user: user).send_application_rejected_email }
+
+    it "renders the header" do
+      expect(mail.subject).to eql("Your application hasn't been approved")
+      expect(mail.to).to eql([user.email])
+    end
+  end
+
+  describe "send application approved email" do
+    let(:mail) { described_class.with(user: user).send_application_approved_email }
+
+    it "renders the header" do
+      expect(mail.subject).to eql("Hey, you can now launch your token 🚀")
       expect(mail.to).to eql([user.email])
     end
   end

@@ -35,7 +35,7 @@ RSpec.describe EmailReminders::SendCompleteProfileReminderJob, type: :job do
 
       aggregate_failures do
         expect(ActionMailer::Base.deliveries.count).to eq 1
-        expect(mail.subject).to eq "Complete your profile and launch your token today 🚀"
+        expect(mail.subject).to eq "Complete your profile and earn your NFT today! 🚀"
       end
     end
   end

@@ -6,7 +6,7 @@ module Users
       return if previous_profile_type == new_profile_type || previous_profile_type === "talent"
 
       user.update!(profile_type: new_profile_type)
-      UserMailer.with(user: user).send_talent_upgrade_email.deliver_later(wait: 5.seconds) if new_profile_type == "approved"
+      UserMailer.with(user: user).send_application_approved_email.deliver_later(wait: 5.seconds) if new_profile_type == "approved"
 
       UserProfileTypeChange.create!(
         user_id: user.id,

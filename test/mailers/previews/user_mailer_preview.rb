@@ -4,24 +4,12 @@ class UserMailerPreview < ActionMailer::Preview
     UserMailer.with(user_id: User.first.id).send_sign_up_email
   end
 
-  def send_welcome_email_talent
-    UserMailer.with(user: Talent.first.user).send_welcome_email
-  end
-
-  def send_welcome_email_investor
-    UserMailer.with(user: Investor.first.user).send_welcome_email
-  end
-
-  def send_token_launch_reminder_email
-    UserMailer.with(user: User.first).send_token_launch_reminder_email
+  def send_welcome_email
+    UserMailer.with(user: User.first).send_welcome_email
   end
 
   def send_token_purchase_reminder_email
     UserMailer.with(user: User.first).send_token_purchase_reminder_email
-  end
-
-  def send_talent_upgrade_email
-    UserMailer.with(user: User.first).send_talent_upgrade_email
   end
 
   def send_password_reset_email
@@ -49,7 +37,23 @@ class UserMailerPreview < ActionMailer::Preview
     UserMailer.with(user: User.first).send_complete_profile_reminder_email
   end
 
+  def send_completed_profile_email
+    UserMailer.with(user: User.first).send_completed_profile_email
+  end
+
   def send_digest_email
     UserMailer.with(user: User.last).send_digest_email
+  end
+
+  def send_application_received_email
+    UserMailer.with(user: User.last).send_application_received_email
+  end
+
+  def send_application_rejected_email
+    UserMailer.with(user: User.last).send_application_rejected_email
+  end
+
+  def send_application_approved_email
+    UserMailer.with(user: User.first).send_application_approved_email
   end
 end
