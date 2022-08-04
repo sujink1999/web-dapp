@@ -39,7 +39,8 @@ class API::UpdateTalent
       Users::UpdateProfileType.new.call(
         user: talent.user,
         who_dunnit_id: user.id,
-        new_profile_type: params[:profile_type]
+        new_profile_type: params[:profile_type],
+        note: params[:note]
       )
 
       if params[:profile_type] == "approved"
@@ -47,7 +48,7 @@ class API::UpdateTalent
       end
     end
 
-    talent.user.update!(params.except(:profile_type))
+    talent.user.update!(params.except(:profile_type, :note))
   end
 
   def update_talent(params)

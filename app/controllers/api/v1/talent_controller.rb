@@ -68,7 +68,8 @@ class API::V1::TalentController < ApplicationController
     params.require(:user).permit(
       :display_name,
       :username,
-      :profile_type
+      :profile_type,
+      :note
     )
   end
 

@@ -1,5 +1,10 @@
 module Tasks
   class Update
+    NOTIFICATION_MAP = {
+      "Quests::VerifiedProfile" => Quests::VerifiedProfileNotification,
+      "Quests::TalentProfile" => Quests::CompletedTalentProfileNotification
+    }
+
     def call(type:, user:, normal_update: true)
       ActiveRecord::Base.transaction do
         task = Task.joins(:quest).where(type: type).where(quest: {user: user}).take
@@ -13,7 +18,7 @@ module Tasks
 
           update_model(model: task.quest, status: "done")
           give_rewards_for_quest(model: task.quest, user: user)
-          create_notification(user: user, quest_id: task.quest_id) if normal_update
+          create_notification(user: user, quest: task.quest) if normal_update
         end
       end
     end
@@ -42,13 +47,17 @@ module Tasks
       end
     end
 
-    def create_notification(user:, quest_id:)
+    def create_notification(user:, quest:)
       CreateNotification.new.call(
         recipient: user,
-        type: QuestCompletedNotification,
+        type: notification_from(quest.type),
         source_id: user.id,
-        model_id: quest_id
+        model_id: quest.id
       )
+    end
+
+    def notification_from(type)
+      NOTIFICATION_MAP[type] || QuestCompletedNotification
     end
   end
 end

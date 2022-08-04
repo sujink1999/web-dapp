@@ -42,7 +42,8 @@ class User < ApplicationRecord
     applying: "applying",
     waiting_for_approval: "waiting_for_approval",
     approved: "approved",
-    talent: "talent"
+    talent: "talent",
+    rejected: "rejected"
   }
 
   module Delivery

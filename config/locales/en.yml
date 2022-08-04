@@ -46,3 +46,16 @@ en:
     quest_completed_notification:
       title: "Quest"
       body: "You just completed a quest! Check your rewards"
+    quests:
+      verified_profile_notification:
+        title: "You're now verified"
+        body: "You have been verified by %{name}"
+      completed_talent_profile_notification:
+        title: "You've completed your profile"
+        body: "You can now apply to launch a talent token"
+    talent_application_approved_notification:
+      title: "Talent application Approved"
+      body: "You have been approved by %{name}"
+    talent_application_rejected_notification:
+      title: "Talent application rejected"
+      body: "Your talent application has been rejected by %{name}"

@@ -24,6 +24,8 @@ const Notification = ({ notification, mode }) => {
         return "wallet";
       case "MessageReceivedNotification":
         return "chat";
+      case "TalentApplicationApprovedNotification":
+      case "TalentApplicationRejectedNotification":
       case "TalentChangedNotification":
         return "star";
       case "QuestCompletedNotification":

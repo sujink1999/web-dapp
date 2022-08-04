@@ -60,7 +60,7 @@ class UserMailer < ApplicationMailer
   end
 
   def send_completed_profile_email
-    @user = indifferent_access_params[:user]
+    @user = indifferent_access_params[:recipient]
     bootstrap_mail(to: @user.email, subject: "You can now apply to launch a Talent Token! 👏")
   end
 
@@ -96,17 +96,20 @@ class UserMailer < ApplicationMailer
   end
 
   def send_application_received_email
-    @user = indifferent_access_params[:user]
+    @user = indifferent_access_params[:recipient]
     bootstrap_mail(to: @user.email, subject: "We've received your application")
   end
 
   def send_application_rejected_email
-    @user = indifferent_access_params[:user]
+    @user = indifferent_access_params[:recipient]
+    @note = indifferent_access_params[:note]
+    @reviewer = User.find(indifferent_access_params[:source_id])
+
     bootstrap_mail(to: @user.email, subject: "Your application hasn't been approved")
   end
 
   def send_application_approved_email
-    @user = indifferent_access_params[:user]
+    @user = indifferent_access_params[:recipient]
     bootstrap_mail(to: @user.email, subject: "Hey, you can now launch your token 🚀")
   end
 

@@ -61,7 +61,7 @@ RSpec.describe UserMailer, type: :mailer do
   end
 
   describe "send application received email" do
-    let(:mail) { described_class.with(user: user).send_application_received_email }
+    let(:mail) { described_class.with(recipient: user).send_application_received_email }
 
     it "renders the header" do
       expect(mail.subject).to eql("We've received your application")
@@ -70,7 +70,8 @@ RSpec.describe UserMailer, type: :mailer do
   end
 
   describe "send application rejected email" do
-    let(:mail) { described_class.with(user: user).send_application_rejected_email }
+    let(:reviewer) { create :user }
+    let(:mail) { described_class.with(recipient: user, source_id: reviewer.id).send_application_rejected_email }
 
     it "renders the header" do
       expect(mail.subject).to eql("Your application hasn't been approved")
@@ -79,7 +80,7 @@ RSpec.describe UserMailer, type: :mailer do
   end
 
   describe "send application approved email" do
-    let(:mail) { described_class.with(user: user).send_application_approved_email }
+    let(:mail) { described_class.with(recipient: user).send_application_approved_email }
 
     it "renders the header" do
       expect(mail.subject).to eql("Hey, you can now launch your token 🚀")

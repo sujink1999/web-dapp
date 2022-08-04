@@ -20,6 +20,7 @@ import Roadmap from "./Show/Roadmap";
 import Perks from "./Show/Perks";
 import SimpleTokenDetails from "./Show/SimpleTokenDetails";
 import SocialRow from "./Show/SocialRow";
+import RejectTalentModal from "./Show/RejectTalentModal";
 
 import Button from "src/components/design_system/button";
 import { Chat } from "src/components/icons";
@@ -59,6 +60,7 @@ const TalentShow = ({
   const [pageInDisplay, setPageInDisplay] = useState("overview");
   const [show, setShow] = useState(false);
   const [changingFollow, setChangingFollow] = useState(false);
+  const [showRejectModal, setShowRejectModal] = useState(false);
   const { mobile, width } = useWindowDimensionsHook();
   const [sharedState, setSharedState] = useState({
     admin,
@@ -223,17 +225,15 @@ const TalentShow = ({
 
   const actionButtons = () => (
     <div className="d-flex flex-row flex-wrap flex-lg-nowrap justify-content-center justify-content-lg-start align-items-center mt-4 mt-lg-5 lg-w-100 lg-width-reset">
-      {
-        sharedState.admin && !isCurrentUserImpersonated && (
-          <Button
-            onClick={() => impersonateUser()}
-            type="primary-default"
-            className="mr-2"
-          >
-            Impersonate
-          </Button>
-        )
-      }
+      {sharedState.admin && !isCurrentUserImpersonated && (
+        <Button
+          onClick={() => impersonateUser()}
+          type="primary-default"
+          className="mr-2"
+        >
+          Impersonate
+        </Button>
+      )}
       {sharedState.admin && !sharedState.talent.verified && (
         <Button
           onClick={() => verifyTalent()}
@@ -248,13 +248,22 @@ const TalentShow = ({
       )}
       {sharedState.admin &&
       sharedState.user.profile_type == "waiting_for_approval" ? (
-        <Button
-          onClick={() => approveUser()}
-          type="primary-default"
-          className="mr-2"
-        >
-          Approve
-        </Button>
+        <>
+          <Button
+            onClick={() => approveUser()}
+            type="primary-default"
+            className="mr-2"
+          >
+            Approve
+          </Button>
+          <Button
+            onClick={() => setShowRejectModal(true)}
+            type="white-subtle"
+            className="mr-2"
+          >
+            Reject
+          </Button>
+        </>
       ) : (
         <Button
           onClick={() => setShow(true)}
@@ -433,6 +442,14 @@ const TalentShow = ({
 
   return (
     <div className="d-flex flex-column lg-h-100 p-0">
+      <RejectTalentModal
+        show={showRejectModal}
+        setShow={setShowRejectModal}
+        mobile={mobile}
+        mode={theme.mode()}
+        sharedState={sharedState}
+        setSharedState={setSharedState}
+      />
       {showAlert && (
         <div
           className="edit-profile-fixed-bar"
