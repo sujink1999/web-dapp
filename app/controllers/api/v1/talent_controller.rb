@@ -69,7 +69,8 @@ class API::V1::TalentController < ApplicationController
       :display_name,
       :username,
       :profile_type,
-      :note
+      :note,
+      :ens
     )
   end
 

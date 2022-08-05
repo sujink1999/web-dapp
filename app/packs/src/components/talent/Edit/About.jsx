@@ -22,6 +22,7 @@ import Checkbox from "src/components/design_system/checkbox";
 import { ArrowRight } from "src/components/icons";
 import LoadingButton from "src/components/button/LoadingButton";
 import Divider from "src/components/design_system/other/Divider";
+import { getENSFromAddress } from "../../../onchain/utils";
 
 import cx from "classnames";
 
@@ -85,6 +86,11 @@ const About = (props) => {
     loading: false,
     profile: false,
     public: false,
+  });
+
+  const [fetchENS, setFetchENS] = useState({
+    loading: false,
+    hasAlreadyFetched: false
   });
   const [openToJobOffers, setOpenToJobOffers] = useState(
     props.talent.open_to_job_offers
@@ -175,6 +181,16 @@ const About = (props) => {
       setErrorTracking((prev) => ({ ...prev, [attribute]: true }));
     }
   };
+
+  const updateUserENS = async () => {
+    if (props.user.wallet_id) {
+      setFetchENS((prev) => ({ ...prev, loading: true}));
+      const name = await getENSFromAddress(props.user.wallet_id);
+      name && changeUserAttribute("ens", name);
+    }
+    setFetchENS((prev) => ({ loading: false, hasAlreadyFetched: true}));
+  };
+
 
   const changeOpenToOffersAttribute = (value) => {
     trackChanges(true);
@@ -375,6 +391,27 @@ const About = (props) => {
           value={props.talent.profile.location || ""}
           className={mobile ? "w-100" : "w-50 pl-2"}
         />
+      </div>
+      <div className="d-flex flex-row w-100 align-items-end mt-4 flex-wrap">
+        <TextInput
+          title={"ENS"}
+          mode={mode}
+          onChange={(e) =>
+            changeTalentProfileAttribute("occupation", e.target.value)
+          }
+          value={props.user.ens || (fetchENS["hasAlreadyFetched"] ? "No domain available" : "")}
+          disabled
+          className="flex-fill mr-3"
+        />
+        <LoadingButton
+          onClick={updateUserENS}
+          type="primary-default"
+          mode={mode}
+          disabled={!props.user.wallet_id || fetchENS["loading"]}
+          loading={fetchENS["loading"]}
+        >
+          Update
+        </LoadingButton>
       </div>
       <div className="d-flex flex-row w-100 justify-content-between mt-4 flex-wrap">
         <TextInput
