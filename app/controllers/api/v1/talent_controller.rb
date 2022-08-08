@@ -70,7 +70,7 @@ class API::V1::TalentController < ApplicationController
       :username,
       :profile_type,
       :note,
-      :ens
+      :ens_domain
     )
   end
 

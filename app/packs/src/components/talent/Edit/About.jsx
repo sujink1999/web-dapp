@@ -186,7 +186,9 @@ const About = (props) => {
     if (props.user.wallet_id) {
       setFetchENS((prev) => ({ ...prev, loading: true}));
       const name = await getENSFromAddress(props.user.wallet_id);
-      name && changeUserAttribute("ens", name);
+      if(name){
+        changeUserAttribute("ens_domain", name);
+      }
     }
     setFetchENS((prev) => ({ loading: false, hasAlreadyFetched: true}));
   };
@@ -399,7 +401,7 @@ const About = (props) => {
           onChange={(e) =>
             changeTalentProfileAttribute("occupation", e.target.value)
           }
-          value={props.user.ens || (fetchENS["hasAlreadyFetched"] ? "No domain available" : "")}
+          value={props.user.ens_domain || (fetchENS["hasAlreadyFetched"] ? "No domain available" : "")}
           disabled
           className="flex-fill mr-3"
         />
