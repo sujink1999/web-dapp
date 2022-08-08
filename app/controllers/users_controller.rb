@@ -89,7 +89,7 @@ class UsersController < ApplicationController
   private
 
   def set_user
-    @user = User.where(["username=? or wallet_id=? or ens=?", params[:username], params[:username], params[:username]]).first
+    @user = User.where(["username=? or wallet_id=? or ens_domain=?", params[:username], params[:username], params[:username]]).first
   end
 
   def user_params
